@@ -21,6 +21,7 @@ public class ActiveConnectionService : IActiveConnectionService
 
         _memoryCache.Set(connectionId, connectionConfig, TimeSpan.FromHours(3));
 
+        //active connection larni yig'ish(UserId bilan ajratiladi)
         var allKeys = _memoryCache.GetOrCreate(_currentUser.UserId, entry =>
         {
             entry.SlidingExpiration = TimeSpan.FromHours(3);
@@ -49,20 +50,23 @@ public class ActiveConnectionService : IActiveConnectionService
             Port = connectionConfig.Port,
             Username = connectionConfig.Username,
             Password = password,
-            Database = databaseOverride ?? connectionConfig.Database ?? "postgres",
+            Database = databaseOverride ?? connectionConfig.Database ?? "postgres", //birinchi marta server ga ulanish uchun. Keyinchalik database aniq ko'rsatiladi
             SslMode = SslMode.Disable,
             Timeout = 10
         };
 
+        //connection faqat method chaqirilgan joyda ochiladi
         var connection = new NpgsqlConnection(cs.ConnectionString);
         return connection;
     }
 
     public void RemoveConnection(Guid connectionId, NpgsqlConnection connection)
     {
+        //connection config ni cache dan tozalash
         if (!_memoryCache.TryGetValue(connectionId, out ConnectionConfig? connectionConfig))
             throw new NotFoundException(nameof(ConnectionConfig), connectionId);
 
+        //connection config ni active connection lardan olib tashlash
         if (_memoryCache.TryGetValue(_currentUser.UserId, out List<Guid>? allKeys))
         {
             allKeys?.Remove(connectionId);
@@ -70,6 +74,8 @@ public class ActiveConnectionService : IActiveConnectionService
         }
 
         _memoryCache.Remove(connectionId);
+
+        //database connection ni dispose qilish(close ichkarida o'zi chaqiradi va qolgan keraksiz ma'lumotlarni ham o'chiradi)
         connection.Dispose();
     }
 
@@ -77,6 +83,7 @@ public class ActiveConnectionService : IActiveConnectionService
     {
         var result = new Dictionary<Guid, ConnectionConfig>();
 
+        //UserId yordamida active connetion larni olish
         if (_memoryCache.TryGetValue(_currentUser.UserId, out List<Guid>? keys))
         {
             foreach (var key in keys)

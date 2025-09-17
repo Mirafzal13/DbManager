@@ -9,6 +9,7 @@ namespace DbManager.Application.UseCases.QueryActions.Queries
     {
         public async Task<List<QueryHistoryModel>> Handle(GetQueriesHistoryQuery request, CancellationToken cancellationToken)
         {
+            //connection id bo'yicha query history olib chiqish(cache dan)
             if (memoryCache.TryGetValue($"history:{request.ConnectionId}", out List<QueryHistoryModel>? history))
             {
                 return history!;

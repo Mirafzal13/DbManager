@@ -1,6 +1,5 @@
 ﻿using DbManager.Application.UseCases.Metadata.Models;
 using DbManager.Application.UseCases.Metadata.Queries;
-using static Npgsql.EntityFrameworkCore.PostgreSQL.Query.Expressions.Internal.PgTableValuedFunctionExpression;
 
 namespace DbManager.Api.Controllers;
 

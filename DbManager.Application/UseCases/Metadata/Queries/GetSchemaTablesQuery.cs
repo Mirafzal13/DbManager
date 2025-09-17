@@ -15,6 +15,8 @@ namespace DbManager.Application.UseCases.Metadata.Queries
             await connection.OpenAsync(cancellationToken);
 
             var result = new List<string>();
+
+            //schema digi table larni olish
             await using var cmd = new NpgsqlCommand(
                 "SELECT table_name FROM information_schema.tables WHERE table_schema = @schema;",
                 connection);

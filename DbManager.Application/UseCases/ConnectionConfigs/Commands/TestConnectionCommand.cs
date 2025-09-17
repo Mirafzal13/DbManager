@@ -11,6 +11,7 @@ namespace DbManager.Application.UseCases.ConnectionConfigs.Commands
             bool result = false;
             try
             {
+                //ConnectionId yordamida cache dan connection ni olish
                 await using var connection = activeConnectionService.GetConnection(command.ConnectionId);
 
                 if (connection != null)

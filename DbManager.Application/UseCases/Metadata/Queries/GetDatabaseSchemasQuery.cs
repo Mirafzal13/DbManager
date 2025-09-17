@@ -16,6 +16,8 @@ namespace DbManager.Application.UseCases.Metadata.Queries
             await connection.OpenAsync(cancellationToken);
 
             var result = new List<string>();
+
+            //database dagi schema larni olish
             await using var cmd = new NpgsqlCommand("SELECT schema_name FROM information_schema.schemata;", connection);
             await using var reader = await cmd.ExecuteReaderAsync();
 

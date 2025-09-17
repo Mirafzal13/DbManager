@@ -19,6 +19,8 @@ namespace DbManager.Application.UseCases.Metadata.Queries
             await conn.OpenAsync(cancellationToken);
 
             var result = new List<ColumnInfoModel>();
+
+            //table column lari haqida ma'lumot olish
             var sql = @"
             SELECT 
                 column_name, 

@@ -16,6 +16,7 @@ namespace DbManager.Application.UseCases.Metadata.Queries
 
             var result = new List<string>();
 
+            //serverdigi database list ni olish
             var cmd = new NpgsqlCommand("SELECT datname FROM pg_database WHERE datistemplate = false;", connection);
             await using var reader = await cmd.ExecuteReaderAsync();
 

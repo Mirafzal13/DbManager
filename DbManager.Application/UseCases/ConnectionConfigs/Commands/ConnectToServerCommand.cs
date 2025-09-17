@@ -19,6 +19,7 @@ namespace DbManager.Application.UseCases.ConnectionConfigs.Commands
     {
         public async Task<Guid> Handle(ConnectToServerCommand command, CancellationToken cancellationToken)
         {
+            //ma'lumotlar saved connection config(from database) asosida kiritilgan bo'lsa Password bo'sh bo'ladi, o'rniga EncryptedPasword kiritiladi.
             var encryptedPassword = string.IsNullOrWhiteSpace(command.EncryptedPasword) ? passwordProtector.Protect(command.Password) : command.EncryptedPasword;
 
             var isConnectionSuccessful = await IsConnectionSuccessful(command, encryptedPassword, cancellationToken);
@@ -26,6 +27,7 @@ namespace DbManager.Application.UseCases.ConnectionConfigs.Commands
                 throw new BadRequestException("Unable to establish connection with the provided server credentials. " +
                 "Please verify host, port, username, and password.");
 
+            //connection config ni cache ga yozish logikasi
             var connectionId = activeConnectionService.AddConnection(new ConnectionConfig
             {
                 Name = command.Name,
@@ -35,6 +37,7 @@ namespace DbManager.Application.UseCases.ConnectionConfigs.Commands
                 EncryptedPassword = encryptedPassword,
             });
 
+            //connection config ni database ga yozish logikasi
             if (command.AutoSave)
             {
                 var isExist = await dbContext.ConnectionConfigs.AnyAsync(x => x.Host == command.Host && x.Port == command.Port, cancellationToken);

@@ -27,8 +27,11 @@ namespace DbManager.Application.UseCases.QueryActions.Commands
             {
                 await using var cmd = new NpgsqlCommand(request.SqlQuery, conn);
 
+                //query qaysi turdaligini aniqlash(response shunga qarab chiqadi)
                 if (request.SqlQuery.TrimStart().StartsWith("SELECT", StringComparison.OrdinalIgnoreCase))
                 {
+                    //Select query
+                    //UI uchun sql query turini bildiruchi field
                     result.IsSelect = true;
 
                     await using var reader = await cmd.ExecuteReaderAsync();
@@ -54,11 +57,13 @@ namespace DbManager.Application.UseCases.QueryActions.Commands
                 }
                 else
                 {
+                    //CREATE, ALTER, INSERT, UPDATE, DELETE
                     result.IsSelect = false;
 
                     result.AffectedRows = await cmd.ExecuteNonQueryAsync();
                 }
 
+                //sql query ni istoriyasini chache ga saqlash
                 SaveHistory(request.ConnectionId, request.Database, request.SqlQuery);
 
                 return result;

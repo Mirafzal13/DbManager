@@ -9,6 +9,7 @@ namespace DbManager.Application.UseCases.ConnectionConfigs.Queries
     {
         public async Task<PagedList<ConnectionConfigModel>> Handle(GetSavedConnectionConfigsQuery request, CancellationToken cancellationToken)
         {
+            //database ga saqlangan config larni olib chiqish
             var connectionConfigs = dbContext.ConnectionConfigs.Where(x => x.UserId == currentUser.UserId).AsQueryable();
             var count = await connectionConfigs.CountAsync(cancellationToken);
 
