@@ -1,0 +1,10 @@
+global using DbManager.Application.Common.Abstractions;
+global using DbManager.Domain.Models;
+global using DbManager.Application.Common.Models;
+global using DbManager.Domain.Exceptions;
+global using MediatR;
+global using AutoMapper;
+global using AutoMapper.QueryableExtensions;
+global using FluentValidation;
+global using DbManager.Domain.Enums;
+global using Microsoft.EntityFrameworkCore;

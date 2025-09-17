@@ -1,0 +1,29 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="EntityFrameworkCore.Exceptions.PostgreSQL" Version="8.0.0" />
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.1" />
+    <PackageReference Include="MediatR" Version="13.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DbManager.Domain\DbManager.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UseCases\Metadata\Commands\" />
+    <Folder Include="UseCases\Metadata\Mappers\" />
+    <Folder Include="UseCases\Metadata\Validators\" />
+    <Folder Include="UseCases\QueryActions\Mappers\" />
+    <Folder Include="UseCases\QueryActions\Validators\" />
+  </ItemGroup>
+
+</Project>
